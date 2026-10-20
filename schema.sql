@@ -28,7 +28,7 @@ CREATE TABLE address (
   postcode    CHAR(5)      NOT NULL,
   city        VARCHAR(80)  NOT NULL,
   customer_id INT          NOT NULL,
-  CONSTRAINT fk_address_customer FOREIGN KEY (customer_id) REFERENCES customer (id)
+  CONSTRAINT fk_address_customer FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE
 );
 
 CREATE TABLE customer_order (
@@ -47,7 +47,7 @@ CREATE TABLE order_line (
   quantity   INT          NOT NULL CHECK (quantity >= 1),
   unit_price DECIMAL(6,2) NOT NULL,  -- le prix payé ce jour-là
   PRIMARY KEY (order_id, candle_id),
-  CONSTRAINT fk_order_line_order  FOREIGN KEY (order_id)  REFERENCES customer_order (id),
+  CONSTRAINT fk_order_line_order  FOREIGN KEY (order_id)  REFERENCES customer_order (id) ON DELETE CASCADE,
   CONSTRAINT fk_order_line_candle FOREIGN KEY (candle_id) REFERENCES candle (id)
 );
 
@@ -59,7 +59,7 @@ CREATE TABLE review (
   approved    BOOLEAN       NOT NULL DEFAULT FALSE,
   customer_id INT           NOT NULL,
   candle_id   INT           NOT NULL,
-  CONSTRAINT fk_review_customer FOREIGN KEY (customer_id) REFERENCES customer (id),
+  CONSTRAINT fk_review_customer FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE,
   CONSTRAINT fk_review_candle   FOREIGN KEY (candle_id)   REFERENCES candle (id)
 );
 
@@ -68,6 +68,6 @@ CREATE TABLE favorite (
   candle_id   INT      NOT NULL,
   added_at    DATETIME NOT NULL,
   PRIMARY KEY (customer_id, candle_id),
-  CONSTRAINT fk_favorite_customer FOREIGN KEY (customer_id) REFERENCES customer (id),
+  CONSTRAINT fk_favorite_customer FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE,
   CONSTRAINT fk_favorite_candle   FOREIGN KEY (candle_id)   REFERENCES candle (id)
 );
